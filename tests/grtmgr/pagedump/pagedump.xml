@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite>
+    <type>sql</type>
+    <name>basic</name>
+    <feature Solution="pagedump"></feature>
+    <description>This bucket tests pagedump.</description>
+    <location>pagedump</location>
+    <default_datasource></default_datasource>
+    <dbinfo>
+      <datasource>
+        <db-version>V06R00C00</db-version>
+        <name>rootpdb</name>
+        <create_options>template template0 encoding 'UTF8' lc_ctype 'en_US.UTF-8' lc_collate 'en_US.UTF-8'</create_options>
+        <envvars>
+          <name>DBNAME</name>
+          <value>rootpdb</value>
+        </envvars>
+        <dbcfgs>
+          <dbcfg>
+            <cname></cname>
+            <cvalue></cvalue>
+            <dname></dname>
+            <dvalue></dvalue>
+          </dbcfg>
+        </dbcfgs>
+      </datasource>
+    </dbinfo>
+    <subsets>
+      <subset>
+        <name></name>
+        <description></description>
+      </subset>
+    </subsets>
+    <setup>
+      <testcase>
+        <name></name>
+        <description></description>
+        <run_datasources></run_datasources>
+        <runcommand></runcommand>
+        <abort_if_failed></abort_if_failed>
+      </testcase>
+    </setup>
+    <testcases>
+      <testcase>
+        <name>pagedump_001.py</name>
+        <description></description>
+        <subsetof></subsetof>
+        <prereq></prereq>
+        <run_datasources></run_datasources>
+        <runcommand>grtest -r pagedump_001.py</runcommand>
+      </testcase>
+    </testcases>
+    <cleanup>
+      <testcase>
+        <name></name>
+        <description></description>
+        <run_datasources></run_datasources>
+        <runcommand></runcommand>
+      </testcase>
+    </cleanup>
+  </testsuite>
+</testsuites>

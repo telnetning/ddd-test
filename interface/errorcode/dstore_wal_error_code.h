@@ -1,0 +1,94 @@
+/*
+ * Copyright (C) 2026 Huawei Technologies Co.,Ltd.
+ *
+ * dstore is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * dstore is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. if not, see <https://www.gnu.org/licenses/>.
+ */
+
+#ifndef DSTORE_WAL_ERROR_CODE_H
+#define DSTORE_WAL_ERROR_CODE_H
+
+#include "common/dstore_common_utils.h"
+#include "framework/dstore_modules.h"
+#include "errorcode/dstore_error_struct.h"
+
+namespace DSTORE {
+
+enum WalErrorReason : uint32_t {
+    WAL_INIT_ERROR = 0x1,
+    WAL_INIT_ALLOC_OOM = 0x2,
+    WAL_NOT_INITED = 0x3,
+    WAL_INVALID_DATA = 0x4,
+    WAL_WRITER_DROP_NOT_ENDED_DATA = 0x5,
+    WAL_FLUSH_INVALID_DATA = 0x6,
+    WAL_INVALID_PARAM = 0x7,
+    WAL_STRING_OPS = 0x8,
+    WAL_INTERNAL_ERROR = 0x9,
+    WAL_PANIC_INTERNAL_ERROR = 0xA,
+    WAL_BUFFER_INIT_MEMORY_NOT_ENOUGH = 0xB,
+    WAL_STREAM_COUNT_EXCEED_LIMIT = 0xC,
+    WAL_STREAM_NOT_FOUND = 0xD,
+    WAL_UNREACHABLE_CODE = 0xE,
+    WAL_WALID_INVALID = 0xF,
+    WAL_READ_ERROR = 0x10,
+    WAL_REJECT_REDO_TASK = 0x11,
+    WAL_FORCE_STOP = 0x12,
+    WAL_STANDBY_TAKE_OVER = 0x13,
+    WAL_STOP_STREAM = 0x14,
+    WAL_ERROR_MAX
+};
+
+const ErrorCode WAL_ERROR_INIT_ERROR =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_INIT_ERROR);
+const ErrorCode WAL_ERROR_INIT_ALLOC_OOM =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_INIT_ALLOC_OOM);
+const ErrorCode WAL_ERROR_NOT_INITED =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_NOT_INITED);
+const ErrorCode WAL_ERROR_INVALID_DATA =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_INVALID_DATA);
+const ErrorCode WAL_ERROR_WRITER_DROP_NOT_ENDED_DATA =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_WRITER_DROP_NOT_ENDED_DATA);
+const ErrorCode WAL_ERROR_FLUSH_INVALID_DATA =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_FLUSH_INVALID_DATA);
+const ErrorCode WAL_ERROR_INVALID_PARAM =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_INVALID_PARAM);
+const ErrorCode WAL_ERROR_STRING_OPS =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_STRING_OPS);
+const ErrorCode WAL_ERROR_INTERNAL_ERROR =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_INTERNAL_ERROR);
+const ErrorCode WAL_ERROR_PANIC_INTERNAL_ERROR =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_PANIC_INTERNAL_ERROR);
+const ErrorCode WAL_ERROR_BUFFER_INIT_MEMORY_NOT_ENOUGH =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_BUFFER_INIT_MEMORY_NOT_ENOUGH);
+const ErrorCode WAL_ERROR_STREAM_COUNT_EXCEED_LIMIT =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_STREAM_COUNT_EXCEED_LIMIT);
+const ErrorCode WAL_ERROR_STREAM_NOT_FOUND =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_STREAM_NOT_FOUND);
+const ErrorCode WAL_ERROR_UNREACHABLE_CODE =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_UNREACHABLE_CODE);
+const ErrorCode WAL_ERROR_WALID_INVALID =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_WALID_INVALID);
+const ErrorCode WAL_ERROR_READ_ERROR =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_READ_ERROR);
+const ErrorCode WAL_ERROR_REJECT_REDO_TASK =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_REJECT_REDO_TASK);
+const ErrorCode WAL_ERROR_FORCE_STOP =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_FORCE_STOP);
+const ErrorCode WAL_ERROR_STANDBY_TAKE_OVER =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_STANDBY_TAKE_OVER);
+const ErrorCode WAL_ERROR_STOP_STREAM =
+    (ERROR_MODULE_WAL | ERROR_SEVERITY_ERROR | WAL_STOP_STREAM);
+
+} /* namespace DSTORE */
+
+#endif

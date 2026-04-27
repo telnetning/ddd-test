@@ -1,0 +1,85 @@
+/*
+ * Copyright (C) 2026 Huawei Technologies Co.,Ltd.
+ *
+ * dstore is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * dstore is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. if not, see <https://www.gnu.org/licenses/>.
+ */
+#include "../common/PCommon.h"
+
+/*
+
+原理:					算法通过改变数据单独的bit值来产生测试用例,
+                        一个测试用例只改变一个bit
+
+
+长度:					长度不变
+
+数量:					bit数
+
+支持数据类型: 	有初值,枚举类除外
+
+*/
+
+int DataElementBitFlipper_getcount(S_Element* pElement)
+{
+
+    ASSERT_NULL(pElement);
+
+    return MIN(pElement->inLen, MAXCOUNT * 2);
+}
+
+char* DataElementBitFlipper_getvalue(S_Element* pElement, int pos)
+{
+    //如果bit长度不被8整除，则加1
+    int in_len;
+    ASSERT_NULL(pElement);
+
+    pos = RAND_RANGE(0, pElement->inLen - 1);
+
+    in_len = (int)(pElement->inLen / 8) + IsAddone(pElement->inLen % 8);
+
+    set_ElementInitoutBuf_ex(pElement, in_len);
+
+    hw_Memcpy(pElement->para.value, pElement->inBuf, in_len);
+
+    FLIP_BIT(pElement->para.value, pos);
+
+    return pElement->para.value;
+}
+
+int DataElementBitFlipper_getissupport(S_Element* pElement)
+{
+    ASSERT_NULL(pElement);
+
+    //枚举不支持
+    if ((pElement->para.type == enum_Number_Enum) || (pElement->para.type == enum_Number_Range) ||
+        (pElement->para.type == enum_String_Enum) || (pElement->para.type == enum_Blob_Enum))
+        return enum_No;
+
+    //只要有初始值，就支持
+    if (pElement->isHasInitValue == enum_Yes)
+        return enum_Yes;
+
+    return enum_No;
+}
+
+const struct Mutater_group DataElementBitFlipper_group = {"DataElementBitFlipper",
+    DataElementBitFlipper_getcount,
+    DataElementBitFlipper_getvalue,
+    DataElementBitFlipper_getissupport,
+    1};
+
+void init_DataElementBitFlipper(void)
+{
+    register_Mutater(&DataElementBitFlipper_group, enum_DataElementBitFlipper);
+}

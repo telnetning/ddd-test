@@ -1,0 +1,85 @@
+/*
+ * Copyright (C) 2026 Huawei Technologies Co.,Ltd.
+ *
+ * dstore is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * dstore is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. if not, see <https://www.gnu.org/licenses/>.
+ */
+#include "../common/PCommon.h"
+
+/*
+
+原理:					测试用例中Blob的随机数量的连续的null bytes（hex：00）会被改变。
+                        变异发生的位置和byte变化的数量一样都是随机决定的。
+                        使用随机byte填充
+
+长度:					长度不变
+
+数量:					0的数量乘8与MAXCOUNT的最小值
+
+支持数据类型: 	有初始值的blob，FixBlob元素
+
+*/
+
+static int BlobChangeFromNull_getcount(S_Element* pElement)
+{
+    ASSERT_NULL(pElement);
+
+    return MIN((in_GetBufZeroNumber(pElement->inBuf, pElement->inLen / 8) * 8), MAXCOUNT);
+}
+
+//因为是变异0，所以还需要优化
+static char* BlobChangeFromNull_getvalue(S_Element* pElement, int pos)
+{
+    int i;
+    int in_len;
+    int start;
+    int change_Len;
+
+    ASSERT_NULL(pElement);
+
+    in_len = (int)(pElement->inLen / 8);
+
+    set_ElementInitoutBuf_ex(pElement, in_len);
+
+    in_GetRegion(in_len, &start, &change_Len);
+
+    hw_Memcpy(pElement->para.value, pElement->inBuf, start);
+
+    for (i = start; i < start + change_Len; i++) {
+        pElement->para.value[i] = RAND_BYTE();
+    }
+
+    hw_Memcpy(
+        pElement->para.value + start + change_Len, pElement->inBuf + start + change_Len, in_len - start - change_Len);
+
+    return pElement->para.value;
+}
+
+static int BlobChangeFromNull_getissupport(S_Element* pElement)
+{
+    ASSERT_NULL(pElement);
+
+    if (((pElement->para.type == enum_Blob) || (pElement->para.type == enum_FixBlob)) &&
+        (pElement->isHasInitValue == enum_Yes))
+        return enum_Yes;
+
+    return enum_No;
+}
+
+const struct Mutater_group BlobChangeFromNull_group = {
+    "BlobChangeFromNull", BlobChangeFromNull_getcount, BlobChangeFromNull_getvalue, BlobChangeFromNull_getissupport, 1};
+
+void init_BlobChangeFromNull(void)
+{
+    register_Mutater(&BlobChangeFromNull_group, enum_BlobChangeFromNull);
+}

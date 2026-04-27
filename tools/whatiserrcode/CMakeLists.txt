@@ -1,0 +1,23 @@
+# Please make sure to only put cpp files in src folder
+FILE(GLOB_RECURSE whatiserrcode_src_list RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+
+set(whatiserrcode_compile_options ${PROTECT_OPTIONS} ${WARNING_OPTIONS} ${OPTIMIZE_OPTIONS} ${CHECK_OPTIONS} ${BIN_SECURE_OPTIONS})
+set(whatiserrcode_link_options ${BIN_LINK_OPTIONS})
+set(whatiserrcode_link_libs dstore securec lz4 cjson z gsutils dl)
+set(whatiserrcode_macro_options ${MACRO_OPTIONS})
+set(whatiserrcode_include_directories
+    ${PROJECT_SOURCE_DIR}/interface
+    ${PROJECT_SOURCE_DIR}/include
+    ${SECURE_INCLUDE_PATH}
+    ${UTILS_INCLUDE_PATH}
+    ${XGBOOST_INCLUDE_PATH}
+    ${CJSON_INCLUDE_PATH}
+)
+set(whatiserrcode_link_directories
+    ${CJSON_LIB_PATH} ${SECURE_LIB_PATH}
+    ${UTILS_LIB_PATH} ${LIBEVENT_LIB_PATH}
+)
+
+add_bintarget(whatiserrcode whatiserrcode_src_list whatiserrcode_include_directories "${whatiserrcode_macro_options}" "${whatiserrcode_compile_options}" "${whatiserrcode_link_options}" "${whatiserrcode_link_libs}")
+target_link_directories(whatiserrcode PRIVATE ${whatiserrcode_link_directories})
+add_dependencies(whatiserrcode dstore)

@@ -1,0 +1,68 @@
+#
+# The gdb script for dstore engine
+#
+
+# Turn off confirm in gdb
+set confirm off
+set print pretty on
+
+
+##########################################################
+# 	Get the buffer desc of page id 			 #
+##########################################################
+document dstore_lookup_buffer
+    usage: dstore_lookup_buffer  single/distribute file_id block_id
+	   get the buffer desc pointer
+end
+
+define dstore_lookup_buffer
+    set $file_id = $arg1
+    set $block_id = $arg2
+
+    if (strcmp($0, "single") == 0)
+    	set $g_bufpool = (BufMgr *)g_storageInstance->GetBufferMgr()
+    end
+
+    if (strcmp($0, "distribute") == 0)
+    	set $g_bufpool = (DistributedBufferMgr *)g_storageInstance->GetBufferMgr()
+    end
+	
+
+    set $g_buf_desc = $g_bufpool->m_buffer_desc
+    set $max_buf_num = $g_bufpool->m_size
+    set $i = 0
+	
+    while $i < $max_buf_num
+        set $tmp_buf_desc = ((BufferDesc *)$g_buf_desc) + $i
+
+	if ((($tmp_buf_desc)->tag.pageId.m_fileId == $file_id) && (($tmp_buf_desc)->tag.pageId.m_blockId == $block_id))
+		p $tmp_buf_desc
+		loop_break
+	end
+		
+	set $i = $i + 1
+    end
+end
+
+
+##########################################################
+# 	print the lwlock info of all threads 	         #
+##########################################################
+document dstore_print_allthrds_lwlockinfo
+    usage: dstore_print_allthrds_lwlockinfo num_of_thread
+	   print the lwlock info of all threads
+end
+
+define dstore_print_allthrds_lwlockinfo
+	set $i = 1
+	while $i < $0
+		t $i
+		if(DSTORE::thrd != 0x0)
+			set $numlock = DSTORE::thrd->lwlockContext.num_held_lwlocks
+			if(($numlock) > 0)
+				p DSTORE::thrd->lwlockContext.held_lwlocks[0]@$numlock
+			end
+		end
+		set $i = $i + 1
+	end
+end

@@ -1,0 +1,41 @@
+{
+"clusterName":	"rgnCluster1",
+	"tenantId":	3,
+	"tenantName":	"tenant1",
+	"nodeId":	1,
+	"storageConfig":	{
+		"type":	2,
+		"clientLibPath":	"xxx/libsalofflinefileisdata.so",
+		"serverProtocolType":	"TCP_TYPE",
+		"serverAddresses":	"xxx",
+		"rootpdbVfsName":	"xxx.vfs.root_pdb",
+		"runlogVfsName":	"xxx.vfs.runtime_log",
+		"votingVfsName":	"xxx.vfs.voting_disk"
+	},
+	"communicationConfig":	{
+		"clusterId":	1,
+		"local":	{
+			"localIp":	"xxx"
+		}
+	},
+	"votingConfig":	{
+		"votingFilePath":	""
+	},
+	"logConfig":	{
+		"logPath":	"xxx/cms",
+		"logLevel":	1
+	},
+	"storeSpaceConfig":	[{
+			"storeSpaceName":	"xxx_temp_resource1.storespace",
+			"maxSpaceSize":	100,
+			"type":	"H"
+		}, {
+			"storeSpaceName":	"xxx_temp_resource2.storespace",
+			"maxSpaceSize":	100,
+			"type":	"M"
+		}, {
+			"storeSpaceName":	"xxx_temp_resource3.storespace",
+			"maxSpaceSize":	100,
+			"type":	"L"
+		}]
+}

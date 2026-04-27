@@ -1,0 +1,139 @@
+#!/bin/perl
+
+# This script scans for the GS Trace IDs included in the source code,
+# and then generate or append to the appropriate *.in files.  From the
+# .in files, the trce ID header files are generated. By checking in the
+# .in files, the numbers for the existing trace IDs can be maintained.
+# Otherwise, each generation may reorder the trace IDs based on the
+# order they appear in the source code.
+
+use strict;
+use Getopt::Long;
+
+my $program_name = $0;
+$program_name =~ s/.*\/([^\/]+)$/$1/;
+
+my %options = ();
+
+my $usage = "Usage: $program_name [options]
+Options:
+  -source <source_directory>    Specify the source directory
+  -output <output_directory>    Specify the output directory
+  -verbose                      Display more information
+";
+
+my $rc = GetOptions(
+  "s=s" => \$options{SOURCE_DIR},
+  "t=s" => \$options{TARGET_DIR},
+  "v" => \$options{VERBOSE},
+  "help" => \$options{HELP}
+);
+
+if($rc != 1) {
+  $rc = -5;
+  print( $usage );
+  exit $rc;
+}
+$rc = -1;
+
+if(defined($options{HELP})) {
+  print( $usage );
+  exit $rc;
+}
+
+my $source_dir = $options{SOURCE_DIR};
+if(!defined($source_dir)) {
+  $source_dir = ".";
+}
+
+my $target_dir = $options{TARGET_DIR};
+if(!defined($target_dir)) {
+  $target_dir = ".";
+}
+
+my %files = ();
+
+# If we discover new module IDs or trace IDs, we can only append them to the .in files
+# in order to maintain the existing numeric values.
+my @entries = `cd $source_dir/../../../../src; grep -r storage_trace_entry;`;
+foreach my $entry (@entries) {
+    chomp($entry);
+
+    my $module;
+    my $function;
+    my $output_dir;
+
+    if($entry =~ /(\w+)\/distribute\/(\w+)\.\w+:\s*storage_trace_entry\(TRACE_ID_(\w+)\)/) {
+        $module = "dstore_$1";
+        $function = "$3";
+    } elsif($entry =~ /(\w+)\/(\w+)\.\w+:\s*storage_trace_entry\(TRACE_ID_(\w+)\)/) {
+        $module = "dstore_$1";
+        $function = "$3";
+    }
+    $output_dir = "$source_dir";
+
+    if (defined($module)) {
+        if(!defined($files{$module})) {
+            if(-e "$output_dir/$module.in") {
+                my $is_func_found = `grep -cP "<func> $function\$" $output_dir/$module.in`;
+                chomp($is_func_found);
+                if(!$is_func_found) {
+                    system("echo \"<func> $function\" >> $output_dir/$module.in");
+                }
+            } else {
+               system("echo \"<func> $function\" > $output_dir/$module.in");
+            }
+
+            $files{$module} = 1;
+        } else {
+            my $is_func_found = `grep -cP "<func> $function\$" $output_dir/$module.in`;
+            chomp($is_func_found);
+            if(!$is_func_found) {
+                system("echo \"<func> $function\" >> $output_dir/$module.in");
+            }
+        }
+    }
+}
+
+# Generate the actual header files with storage engine trace IDs from the .in files
+
+my $trace_header = "common/instrument/trace/dstore_trace.h";
+
+if (opendir(DIR, "$source_dir")) {
+    while(my $file = readdir(DIR)) {
+        if($file =~ /(.+)\.in/) {
+            my $module = $1;
+
+            open(OUTFILE, "> $target_dir/${module}_trace.h");
+
+            my $moduleUpper = $module;
+            $moduleUpper =~ tr/a-z/A-Z/;
+
+            print(OUTFILE "/* This is a generated file */\n\n");
+            print(OUTFILE "#ifndef ${moduleUpper}_TRACE_H\n");
+            print(OUTFILE "#define ${moduleUpper}_TRACE_H\n");
+
+            print(OUTFILE "\n#include \"$trace_header\"\n\n");
+
+            $moduleUpper =~ s/DSTORE_//;
+
+            my $count = 0;
+            open(INFILE, "< $source_dir/$file");
+            while(my $line = <INFILE>) {
+                chomp($line);
+                $count++;
+                if($line =~ /\s*<func>\s*([\w]*)$/) {
+                    my $func = $1;
+                    print(OUTFILE "#define TRACE_ID_$func STORAGE_TRACE_ID_PACK(MODULE_${moduleUpper}, $count)\n");
+                }
+            }
+            close(INFILE);
+
+            print(OUTFILE "\n#endif");
+            close(OUTFILE);
+        }
+    }
+    closedir(DIR);
+}
+
+exit 0;

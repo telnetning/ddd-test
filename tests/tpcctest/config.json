@@ -1,0 +1,12 @@
+{
+"tpcc standard requires TpccItemNumPerWareHouse 100000": "",
+    "TpccItemNumPerWareHouse": 10000,
+    "tpcc standard requires TpccCustomerPerDistrict 3000": "",
+    "TpccCustomerPerDistrict": 300,   
+    "tpcc standard requires TpccOrderPerDistrict 3000": "",
+    "TpccOrderPerDistrict": 300,     
+    "workThreadNum": 20,
+    "wareHouseNum": 20,
+    "durationTime": 120,
+    "fixed": true
+}

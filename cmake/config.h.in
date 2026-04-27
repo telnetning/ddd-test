@@ -1,0 +1,14 @@
+#cmakedefine DSTORE_USE_ASSERT_CHECKING
+#cmakedefine UT
+#cmakedefine DSTORE_TEST_TOOL
+#cmakedefine EMBEDDED
+#cmakedefine DISABLE_TABLESPACE_MOCK
+#cmakedefine DISABLE_SEGMENT_MOCK
+#cmakedefine DISABLE_BUFFER_MOCK
+#cmakedefine DISABLE_UNDO_MOCK
+#cmakedefine DSTORE_USE_NUMA
+#cmakedefine __ARM_LSE
+/* Define to 1 if you have __sync_lock_test_and_set(int *) and friends. */
+#cmakedefine HAVE_GCC_INT_ATOMICS 1
+#cmakedefine PD_ENTRY_STATS_COLLECTION
+#cmakedefine USE_INTEGER_DATETIMES

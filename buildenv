@@ -1,0 +1,65 @@
+#-------------------------------------------
+# platform
+#-------------------------------------------
+# Obtain the operating system name and version.
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS_NAME="$NAME"
+    OS_VERSION="$VERSION_ID"
+    echo "Operating system: $OS_NAME $OS_VERSION"
+else
+    echo "The operating system cannot be identified."
+fi
+
+platform=`arch`
+echo "platform=$platform"
+if [ "$platform" == "aarch64" ]; then
+  PLATFORM=euleros2.9_aarch64
+elif [ "$platform" == "x86_64" ]; then
+  PLATFORM=euleros2.5_x86_64
+fi
+
+#-------------------------------------------
+# code path
+#-------------------------------------------
+export BUILD_ROOT=/xxx/dstore
+export LOCAL_LIB_PATH=$BUILD_ROOT/../local_libs
+
+#-------------------------------------------
+# lib path
+#-------------------------------------------
+export C_INCLUDE_PATH=${LOCAL_LIB_PATH}/lz4/include:${C_INCLUDE_PATH}
+export C_INCLUDE_PATH=${LOCAL_LIB_PATH}/cjson/include:${C_INCLUDE_PATH}
+export C_INCLUDE_PATH=${LOCAL_LIB_PATH}/gtest/include:${C_INCLUDE_PATH}
+export C_INCLUDE_PATH=${LOCAL_LIB_PATH}/secure/include:${C_INCLUDE_PATH}
+export CPLUS_INCLUDE_PATH=${C_INCLUDE_PATH}
+
+#-------------------------------------------
+# cmake flag
+#-------------------------------------------
+
+export APPEND_FLAGS="-O0 -w -fPIC"
+export DEBUG_TYPE=release
+
+#-------------------------------------------
+# LD_LIBRARY_PATH
+#-------------------------------------------
+export LD_LIBRARY_PATH=${LOCAL_LIB_PATH}/lz4/lib:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=${LOCAL_LIB_PATH}/cjson/lib:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=${LOCAL_LIB_PATH}/gtest/lib:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=${LOCAL_LIB_PATH}/secure/lib:${LD_LIBRARY_PATH}
+
+export GCC_VERNAME=gcc7.3
+export GCC_VERSION=7.3.0
+export GCCFOLDER=$LOCAL_LIB_PATH/buildtools/$GCC_VERNAME
+export CC=$GCCFOLDER/gcc/bin/gcc
+export CXX=$GCCFOLDER/gcc/bin/g++
+export LD_LIBRARY_PATH=$GCCFOLDER/gcc/lib64:$GCCFOLDER/isl/lib:$GCCFOLDER/mpc/lib/:$GCCFOLDER/mpfr/lib/:$GCCFOLDER/gmp/lib/:$LD_LIBRARY_PATH
+if [ "$OS_NAME" == "Huawei Cloud EulerOS" ]; then
+  \cp /usr/lib64/libstdc++.so.6 $GCCFOLDER/gcc/lib64/
+fi
+
+#-------------------------------------------
+# PATH
+#-------------------------------------------
+export PATH=$GCCFOLDER/gcc/bin:$PATH

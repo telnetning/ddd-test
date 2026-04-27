@@ -1,0 +1,5 @@
+add_subdirectory(pagedump)
+add_subdirectory(waldump)
+add_subdirectory(buflookup)
+add_subdirectory(whatiserrcode)
+add_subdirectory(htablookup)

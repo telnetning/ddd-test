@@ -1,0 +1,8 @@
+event_type, event_name
+STATE_WAIT_EXAMPLE, "wait example"
+STATE_TRANSACTION_RECORD_ABORT, "transaction record abort"
+STATE_UNDO_FETCH_RECORD, "undo fetch record"
+STATE_BUFFER_LOOKUP_HASHTABLE, "buffer lookup hash table"
+STATE_BUFFER_GET_FREEBUF, "buffer get free buffer"
+STATE_WAL_PROC_NOREDO_RECORD, "wal proc noredo record"
+STATE_WAL_GET_REDO_RECORD, "wal get redo record entrys"

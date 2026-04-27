@@ -1,0 +1,10 @@
+<func> DistributedUndoMgr__Init
+<func> DistributedUndoMgr__GetOwnerNode
+<func> DistributedUndoMgr__AllocateZoneId
+<func> DistributedUndoMgr__AcquireNewZoneLock
+<func> DistributedUndoMgr__ReleaseZoneLock
+<func> UndoZone__Recycle
+<func> UndoZone__InsertUndoRecord
+<func> UndoMgr__Init
+<func> UndoMgr__SwitchZone
+<func> UndoZone__GetTransactionSlotCopy

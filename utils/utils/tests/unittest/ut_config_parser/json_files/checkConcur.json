@@ -1,0 +1,25 @@
+{
+	"cluster_server":	{
+		"log_level":	"INFO",
+		"node_info":	[{
+				"node_id":	"1",
+				"node_type":	"coordinator",
+				"heartbeat_time":	120,
+				"ip_lists":	["192.168.0.20", "192.168.0.100"]
+			}, {
+				"node_id":	"2",
+				"node_type":	"data",
+				"heartbeat_time":	120,
+				"ip_lists":	[{
+						"host":	["192.168.0.1", "192.168.0.2"],
+						"port":	[5550, 5551, 5552, 5555]
+					}, {
+						"backup":	["192.168.0.10"],
+						"port":	[5560, 5561, 5562]
+					}]
+			}]
+	},
+	"hello":	10,
+	"second":	20,
+	"first":	10
+}

@@ -1,0 +1,13 @@
+event_type, event_name
+WAIT_EVENT_BUFFER_READ_PAGE_SYNC, "buffer read page sync"
+WAIT_EVENT_BUFFER_WRITE_PAGE_SYNC, "buffer write page sync"
+WAIT_EVENT_BUFFER_WRITE_PAGE_ASYNC, "buffer write page async"
+WAIT_EVENT_CONTROLFILE_FLUSH_PAGE_BUFFER, "controlfile flush page buffer"
+WAIT_EVENT_CONTROLFILE_READ_PAGE, "controlfile read page"
+WAIT_EVENT_CONTROLFILE_READ_META_PAGE, "controlfile read meta page"
+WAIT_EVENT_CONTROLFILE_WRITE_PAGE_SYNC, "controlfile write page sync"
+WAIT_EVENT_TBSDATAFILE_EXTEND_FILE, "tbsdatafile extend file"
+WAIT_EVENT_WALFILE_READ, "walfile read"
+WAIT_EVENT_WALFILE_READ_ASYNC, "walfile read async"
+WAIT_EVENT_WALFILE_WRITE_ASYNC, "walfile write async"
+WAIT_EVENT_WALFILE_FSYNC, "walfile fsync"

@@ -1,0 +1,8 @@
+<func> DistributedTableLockMgr__SendSyncLockMessagesSplit
+<func> DistributedTableLockMgr__SendSyncLockMessages
+<func> DistributedLockMgr__StopWaiting
+<func> DistributedLockMgr__OnRecvUnlockMessage
+<func> DistributedLockMgr__TransferLockEntriesIntoBucket
+<func> DistributedLockMgr__DoWhenClusterMemberChange
+<func> DistributedLockMgr__TransferOutLockBucket
+<func> DistributedXactLockMgr__WaitForLockWakeup
